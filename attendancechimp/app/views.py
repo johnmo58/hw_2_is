@@ -53,3 +53,24 @@ def index(request):
 
 
 
+
+
+def time_view(request):
+    now = datetime.now(CDT)
+    return HttpResponse(now.strftime("%H:%M"), content_type="text/plain")
+
+
+def to_number(s):
+    try:
+        return int(s)
+    except (TypeError, ValueError):
+        return float(s)
+
+
+def sum_view(request):
+    try:
+        n1 = to_number(request.GET.get("n1"))
+        n2 = to_number(request.GET.get("n2"))
+    except (TypeError, ValueError):
+        return JsonResponse({"error": "n1 and n2 must be numbers"}, status=400)
+    return JsonResponse({"sum": n1 + n2})
